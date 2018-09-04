@@ -30,10 +30,11 @@ public class FileController {
     private FileUploadService fileUploadService;
 
     @ApiOperation(value = "文件读取")
-    @GetMapping(value = "/file/{key}/{name}.{type}")
-    public ResponseEntity<byte[]> read( @PathVariable String key, @PathVariable String name,@PathVariable String type) throws IOException {
+    @GetMapping(value = "/file/{date}/{key}/{name}.{type}")
+    public ResponseEntity<byte[]> read(@PathVariable String date, @PathVariable String key,
+                                       @PathVariable String name,@PathVariable String type) throws IOException {
 
-        byte[] content = fileUploadService.read(key, name +"."+ type);
+        byte[] content = fileUploadService.read( date, key, name +"."+ type);
         HttpHeaders headers = new HttpHeaders();
         if ("PDF".equalsIgnoreCase(type)) {
             headers.setContentType(MediaType.APPLICATION_PDF);
