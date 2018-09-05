@@ -14,11 +14,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-/**
- * @author huhailiang937
- * @date 2017年4月7日下午11:40:05
- * @since 1.0.0
- */
 public class DateUtils {
 
 	public static final int YEAR_RETURN = 0;

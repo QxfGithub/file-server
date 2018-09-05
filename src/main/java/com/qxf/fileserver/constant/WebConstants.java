@@ -1,11 +1,5 @@
 package com.qxf.fileserver.constant;
 
-/**
- * web 常量
- *
- * @author zhangbi617
- * @date 02/05/2017
- */
 public class WebConstants {
 
     /**

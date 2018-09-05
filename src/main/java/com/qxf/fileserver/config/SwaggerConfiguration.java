@@ -26,13 +26,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * swagger相关配置
- *
- * @author LUYI374
- * @date 2017年2月28日
- * @since 1.0.0
- */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfiguration implements ApplicationListener<EmbeddedServletContainerInitializedEvent> {

@@ -5,13 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 
-/**
- * 文件读取工具类
- * 
- * @author GUANLIANGYOU515
- * @date   2018年4月18日
- * @since  1.0.0
- */
 public class FileUtil {
     private static final Logger LOG = LoggerFactory.getLogger(FileUtil.class);
 

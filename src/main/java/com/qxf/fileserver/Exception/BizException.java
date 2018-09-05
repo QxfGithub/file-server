@@ -1,12 +1,5 @@
 package com.qxf.fileserver.Exception;
 
-/**
- * 系统异常
- * 
- * @author LUYI374
- * @date 2017年2月12日
- * @since 1.0.0
- */
 public class BizException extends RuntimeException {
 
     private static final long serialVersionUID = 1095242212086237834L;

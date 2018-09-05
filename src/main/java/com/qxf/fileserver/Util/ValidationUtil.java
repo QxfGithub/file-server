@@ -9,15 +9,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-/**
- * 
- * Description:ValidationUtil
- * 
- * @author
- * @version 1.0
- * @since ESTATE-CLOUD
- * @see com.paic.es.common.util
- */
+
 public class ValidationUtil {
 	private static final Logger LOG = Logger.getLogger(ValidationUtil.class);
 
