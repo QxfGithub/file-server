@@ -1,11 +1,14 @@
 package com.qxf.fileserver.Util;
 
 import com.qxf.fileserver.dto.ExcelDTO;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellUtil;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletResponse;
@@ -32,6 +35,10 @@ public class POIExport<T> {
         this.headers = headers;
         init();
     }
+
+    public POIExport() {
+    }
+
     public List<ColInfo> getHeaders() {
         return headers;
     }
@@ -162,7 +169,7 @@ public class POIExport<T> {
     }
 
     /** 设置csv文件头信息 */
-    public static List<ColInfo> getCsvHeader(Integer transactionType) {
+    public List<ColInfo> getCsvHeader(Integer transactionType) {
         Map<String, String> payTypeMap = new HashMap<>();
         payTypeMap.put("default", "未知");
         payTypeMap.put("0", "POS");
@@ -191,11 +198,37 @@ public class POIExport<T> {
         return headers;
     }
 
-    public static void getExcelData(ExcelDTO dto,POIExport<ExcelDTO> exportCsv) throws  IllegalAccessException, InvocationTargetException {
+    public void getExcelData(ExcelDTO dto,POIExport<ExcelDTO> exportCsv) throws  IllegalAccessException, InvocationTargetException {
         List<ExcelDTO> resultVOs=new ArrayList<>(10000);
         resultVOs.add(dto);
         exportCsv.writeDataRows(resultVOs);
     }
 
+    public String parseExcel(String path,String name, String key) throws IOException, InvalidFormatException {
+        StringBuilder result = new StringBuilder();
+        File excel = new File(path + File.separator
+                + DateUtils.formatDate(new Date(), DateUtils.DATETIME_PUBLISH_FORMAT) +File.separator
+                + key +"_"+ name);
+
+        if(excel.exists()){
+            XSSFWorkbook xssfWorkbook =new XSSFWorkbook(excel);
+            //开始解析
+            Sheet sheet = xssfWorkbook.getSheetAt(0);
+            int dataRow=0;
+            while (true){
+                Row row =  sheet.getRow(dataRow++);
+                if(row==null || row.getCell(0)==null|| org.apache.commons.lang3.StringUtils.isBlank( row.getCell(0).getStringCellValue())) {
+                    break;
+                }
+                Iterator<Cell> iterator = row.cellIterator();
+                while(iterator.hasNext()){
+                    result.append(iterator.next().getStringCellValue()).append("|");
+                }
+                result.append("    ");
+            }
+        }
+        return result.toString();
+
+    }
 
 }

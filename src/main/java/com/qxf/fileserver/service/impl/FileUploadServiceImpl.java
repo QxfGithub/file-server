@@ -5,7 +5,6 @@ import com.qxf.fileserver.Exception.BizException;
 import com.qxf.fileserver.Util.DateUtils;
 import com.qxf.fileserver.Util.FileUtil;
 import com.qxf.fileserver.service.FileUploadService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,9 +33,9 @@ public class FileUploadServiceImpl implements FileUploadService {
         String key = UUID.randomUUID().toString();
         String ext = originalName.substring(originalName.lastIndexOf(".") + 1, originalName.length());
 
-        if(!StringUtils.upperCase(ext).equals("PNG") && !StringUtils.upperCase(ext).equals("JPG")) {
+        /*if(!StringUtils.upperCase(ext).equals("PNG") && !StringUtils.upperCase(ext).equals("JPG")) {
             throw new BizException("file.format.is.not.supported");
-        }
+        }*/
 
         int width = 0;
         int height = 0;

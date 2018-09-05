@@ -10,7 +10,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,8 +34,16 @@ import java.util.Date;
 @RestController
 public class FileController {
 
+    /**
+     * 文件存储路径
+     */
+    @Value("${file.store.path:D:/Program Files/File}")
+    private String fileStorePath;
+
     @Autowired
     private FileUploadService fileUploadService;
+
+    private static POIExport POIExport = new POIExport<>();
 
     @ApiOperation(value = "文件读取")
     @GetMapping(value = "/file/{date}/{key}/{name}.{type}")
@@ -70,4 +80,12 @@ public class FileController {
         exportCsv.exportExcel(response, "excel_" + suffix);
     }
 
+    @ApiOperation("excel解析")
+    @PostMapping(value = "/ParseExcel")
+    @ResponseBody
+    @ApiImplicitParams({@ApiImplicitParam(name="file", paramType = "form", dataType="file", value = "附件")})
+    public ResponseVO<String> parseExcel(MultipartFile file)throws IOException, InvalidFormatException {
+        String key = fileUploadService.upload(file);
+        return ResponseVO.successResponse(POIExport.parseExcel(fileStorePath,file.getOriginalFilename(),key));
+    }
 }
