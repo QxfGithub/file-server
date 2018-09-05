@@ -3,6 +3,7 @@ package com.qxf.fileserver.controller;
 
 import com.qxf.fileserver.Util.DateUtils;
 import com.qxf.fileserver.Util.POIExport;
+import com.qxf.fileserver.dto.ContractDTO;
 import com.qxf.fileserver.dto.ExcelDTO;
 import com.qxf.fileserver.service.FileUploadService;
 import com.qxf.fileserver.vo.ResponseVO;
@@ -42,6 +43,8 @@ public class FileController {
 
     @Autowired
     private FileUploadService fileUploadService;
+    @Autowired
+    private com.qxf.fileserver.service.ContractPdfService contractPdfService;
 
     private static POIExport POIExport = new POIExport<>();
 
@@ -87,5 +90,16 @@ public class FileController {
     public ResponseVO<String> parseExcel(MultipartFile file)throws IOException, InvalidFormatException {
         String key = fileUploadService.upload(file);
         return ResponseVO.successResponse(POIExport.parseExcel(fileStorePath,file.getOriginalFilename(),key));
+    }
+
+    @ApiOperation(value = "生成PDF")
+    @GetMapping(value = "/pdf")
+    @ResponseBody
+    public ResponseEntity<byte[]> previewAgreement(ContractDTO dto) throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.add("Content-Disposition","1.pdf");
+        byte[] pdfBytes = contractPdfService.generatePDF(dto);
+        return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
 }
