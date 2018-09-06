@@ -66,7 +66,7 @@ public class SwaggerConfiguration implements ApplicationListener<EmbeddedServlet
 
     private ApiInfo apiInfo() {
         Contact contact = new Contact("QXF", "", "1348717049@qq.com");
-        return new ApiInfoBuilder().title("Gov Cloud web API  DOC").contact(contact).description("文件服务").build();
+        return new ApiInfoBuilder().title("QXF web API  DOC").contact(contact).description("文件服务").build();
     }
 
     private String getAddress() {

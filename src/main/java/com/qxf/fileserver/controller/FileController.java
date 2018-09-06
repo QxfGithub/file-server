@@ -125,4 +125,5 @@ public class FileController {
     public ResponseVO<Map<String,String>> queryMaterial(@PathVariable("key") String key,@PathVariable("ext") String ext) {
         return ResponseVO.successResponse(materialService.queryMaterial(key,ext));
     }
+
 }
