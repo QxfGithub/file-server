@@ -5,13 +5,17 @@ import com.qxf.fileserver.Util.DateUtils;
 import com.qxf.fileserver.Util.POIExport;
 import com.qxf.fileserver.dto.ContractDTO;
 import com.qxf.fileserver.dto.ExcelDTO;
+import com.qxf.fileserver.dto.UploadMaterialDTO;
+import com.qxf.fileserver.form.UploadMaterialForm;
 import com.qxf.fileserver.service.FileUploadService;
+import com.qxf.fileserver.service.MaterialService;
 import com.qxf.fileserver.vo.ResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -25,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
+import java.util.Map;
 
 
 /**
@@ -45,6 +50,8 @@ public class FileController {
     private FileUploadService fileUploadService;
     @Autowired
     private com.qxf.fileserver.service.ContractPdfService contractPdfService;
+    @Autowired
+    private MaterialService materialService;
 
     private static POIExport POIExport = new POIExport<>();
 
@@ -64,7 +71,7 @@ public class FileController {
         return new ResponseEntity<>(content, headers, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/attachment")
+    @PostMapping(value = "/file/upload")
     @ApiOperation("附件上传")
     @ResponseBody
     @ApiImplicitParams({@ApiImplicitParam(name="file", paramType = "form", dataType="file", value = "附件")})
@@ -73,7 +80,7 @@ public class FileController {
     }
 
     @ApiOperation("excel导出")
-    @GetMapping(value = "/export")
+    @GetMapping(value = "/Excel/export")
     @ResponseBody
     public  void exportExcel(HttpServletResponse response, @ModelAttribute  ExcelDTO dto) throws IllegalAccessException, IOException, InvocationTargetException {
         // 创建csv文件
@@ -84,7 +91,7 @@ public class FileController {
     }
 
     @ApiOperation("excel解析")
-    @PostMapping(value = "/ParseExcel")
+    @PostMapping(value = "/Excel/Parse")
     @ResponseBody
     @ApiImplicitParams({@ApiImplicitParam(name="file", paramType = "form", dataType="file", value = "附件")})
     public ResponseVO<String> parseExcel(MultipartFile file)throws IOException, InvalidFormatException {
@@ -101,5 +108,21 @@ public class FileController {
         headers.add("Content-Disposition","1.pdf");
         byte[] pdfBytes = contractPdfService.generatePDF(dto);
         return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/base64/upload" , method = RequestMethod.PUT)
+    @ApiOperation("base64流上传")
+    @ResponseBody
+    public ResponseVO<Map<String,String> > upload(@RequestBody UploadMaterialForm materialForm) {
+        UploadMaterialDTO dto = new UploadMaterialDTO();
+        BeanUtils.copyProperties(materialForm, dto);
+        return ResponseVO.successResponse(materialService.uploadMaterial(dto));
+    }
+
+    @RequestMapping(value = "/base64/{key}/{ext}", method = RequestMethod.GET)
+    @ApiOperation("材料查询")
+    @ResponseBody
+    public ResponseVO<Map<String,String>> queryMaterial(@PathVariable("key") String key,@PathVariable("ext") String ext) {
+        return ResponseVO.successResponse(materialService.queryMaterial(key,ext));
     }
 }
