@@ -1,6 +1,7 @@
 package com.qxf.fileserver.controller;
 
 
+import com.qxf.fileserver.annotation.LOG;
 import com.qxf.fileserver.dao.AccountDao;
 import com.qxf.fileserver.dao.domain.Account;
 import com.qxf.fileserver.vo.ResponseVO;
@@ -27,6 +28,7 @@ public class DBController {
     @RequestMapping(value = "/db", method = RequestMethod.GET)
     @ApiOperation("db")
     @ResponseBody
+    @LOG(operateType = 1, logStatus = 1, operator = 1)
     public ResponseVO<Account> db() {
         return ResponseVO.successResponse(AccountDao.findOne(1L));
     }
