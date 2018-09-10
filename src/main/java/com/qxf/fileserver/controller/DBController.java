@@ -27,6 +27,7 @@ public class DBController {
     @RequestMapping(value = "/db", method = RequestMethod.GET)
     @ApiOperation("db")
     @ResponseBody
+    @LOG(operateType = 1, logStatus = 1, operator = 1)
     public ResponseVO<Account> db() {
         return ResponseVO.successResponse(AccountDao.findOne(1L));
     }
