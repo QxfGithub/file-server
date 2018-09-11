@@ -4,6 +4,7 @@ package com.qxf.fileserver.controller;
 import com.qxf.fileserver.annotation.LOG;
 import com.qxf.fileserver.dao.AccountDao;
 import com.qxf.fileserver.dao.domain.Account;
+import com.qxf.fileserver.dto.AddDTO;
 import com.qxf.fileserver.vo.ResponseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,8 +29,16 @@ public class DBController {
     @RequestMapping(value = "/db", method = RequestMethod.GET)
     @ApiOperation("db")
     @ResponseBody
-    @LOG(operateType = 1, logStatus = 1, operator = 1)
+    @LOG()
     public ResponseVO<Account> db() {
         return ResponseVO.successResponse(AccountDao.findOne(1L));
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @ApiOperation("add")
+    @ResponseBody
+    @LOG()
+    public ResponseVO<Boolean> add(AddDTO dto) {
+        return ResponseVO.successResponse(true);
     }
 }
