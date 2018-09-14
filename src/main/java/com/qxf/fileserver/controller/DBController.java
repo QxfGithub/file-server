@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.Future;
+
 
 /**
  * @author QIUXUEFU376
@@ -28,6 +30,8 @@ public class DBController {
 
     @Autowired
     private AccountDao AccountDao;
+    @Autowired
+    private com.qxf.fileserver.service.AsyncService asyncService;
 
 
     @RequestMapping(value = "/db", method = RequestMethod.GET)
@@ -38,6 +42,7 @@ public class DBController {
 
         ApplicationContext ioc = SpringUtil.getApplicationContext();
         ioc.publishEvent(new UpdateEvent(new Object()));
+        System.out.println("db Thread: " +Thread.currentThread().getId());
 
         return ResponseVO.successResponse(AccountDao.findOne(1L));
     }
@@ -48,5 +53,23 @@ public class DBController {
     @LOG
     public ResponseVO<Boolean> add(AddDTO dto) {
         return ResponseVO.successResponse(true);
+    }
+
+    @RequestMapping(value = "/AsyncDb", method = RequestMethod.GET)
+    @ApiOperation("AsyncDb")
+    @ResponseBody
+    public ResponseVO<Account> asyncDb() throws Exception {
+
+        System.out.println("asyncDb Thread: " +Thread.currentThread().getId());
+        Future<Boolean> task= asyncService.asyncDb();
+
+
+        /*if(task.isDone()){
+            System.out.println("wancheng");
+        };*/
+        //boolean result = task.get(1000L, TimeUnit.MILLISECONDS);
+
+
+        return ResponseVO.successResponse(AccountDao.findOne(1L));
     }
 }

@@ -11,8 +11,12 @@ public class MyEventHandle {
      * 所有，该参数事件，或者其子事件（子类）都可以接收到
      */
     @EventListener
-    public void event(UpdateEvent event){
+    public void event(UpdateEvent event) throws InterruptedException{
+
+        Thread.sleep(10000);
+
         System.out.println("MyEventHandle 接收到事件：" + event.getClass());
+        System.out.println("MyEventHandle Thread:" +Thread.currentThread().getId());
     }
 
 
