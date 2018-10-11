@@ -84,6 +84,7 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
+            <version>1.4</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
@@ -104,6 +105,7 @@
             <artifactId>itext-asian</artifactId>
             <version>5.2.0</version>
         </dependency>
+
 
         <!--jpa 相关-->
         <dependency>
@@ -131,6 +133,14 @@
             <artifactId>spring-aspects</artifactId>
         </dependency>
 
+
+
+        <!-- cat -->
+        <dependency>
+            <groupId>com.dianping.cat</groupId>
+            <artifactId>cat-client</artifactId>
+            <version>3.0.0</version><!--根据自己打包的版本号进行修改-->
+        </dependency>
     </dependencies>
 
     <build>
