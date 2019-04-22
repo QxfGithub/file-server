@@ -54,6 +54,8 @@ public class FileController {
     private com.qxf.fileserver.service.ContractPdfService contractPdfService;
     @Autowired
     private MaterialService materialService;
+    @Autowired
+    Test test;
 
     private static POIExport POIExport = new POIExport<>();
 
@@ -128,14 +130,10 @@ public class FileController {
         return ResponseVO.successResponse(materialService.queryMaterial(key,ext));
     }
 
-
-    @Autowired
-    Test test;
-
-    @RequestMapping(value = "/aaaa", method = RequestMethod.GET)
-    @ApiOperation("aaaa")
+    @RequestMapping(value = "/testConditionOnProperty", method = RequestMethod.GET)
+    @ApiOperation("测试ConditionOnProperty")
     @ResponseBody
-    public String aaa() {
+    public String testConditionOnProperty() {
         return (test.test1());
     }
 
