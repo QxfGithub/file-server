@@ -30,6 +30,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.Map;
+import com.qxf.fileserver.service.Test;
+
 
 
 /**
@@ -124,6 +126,17 @@ public class FileController {
     @ResponseBody
     public ResponseVO<Map<String,String>> queryMaterial(@PathVariable("key") String key,@PathVariable("ext") String ext) {
         return ResponseVO.successResponse(materialService.queryMaterial(key,ext));
+    }
+
+
+    @Autowired
+    Test test;
+
+    @RequestMapping(value = "/aaaa", method = RequestMethod.GET)
+    @ApiOperation("aaaa")
+    @ResponseBody
+    public String aaa() {
+        return (test.test1());
     }
 
 }
